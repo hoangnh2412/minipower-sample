@@ -1,0 +1,18 @@
+{
+  "version": 3,
+  "project_name": "einvoice-sample",
+  "project_summary": "Dự án hoá đơn điện tử",
+  "current_phase": "discovery",
+  "project_mode": "standard",
+  "docs_provider": "local",
+  "tasks_provider": "none",
+  "chat_provider": "none",
+  "code_provider": "local",
+  "trace_store": "sqlite",
+  "surfaces": [
+    "docs",
+    "backend",
+    "frontend",
+    "autotest"
+  ]
+}

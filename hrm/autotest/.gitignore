@@ -1,6 +1,0 @@
-node_modules
-.env
-reports
-test-results
-playwright-report
-.DS_Store

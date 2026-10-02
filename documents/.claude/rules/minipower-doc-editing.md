@@ -1,1 +1,0 @@
-/Volumes/Data/Working/Personal/minipower/minipower/install/claude/rules/minipower-doc-editing.md

@@ -1,1 +1,0 @@
-/Volumes/Data/Working/Personal/minipower/minipower/agents/token-guard.md
