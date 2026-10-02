@@ -6,6 +6,7 @@ Tài liệu **không thuộc một module** hoặc **ảnh hưởng nhiều modu
 |---------------|-----|----------|
 | `jarvis-usage-principles.md` | — | **Nguyên tắc sử dụng Jarvis** — [đã có](jarvis-usage-principles.md) |
 | `DOC-08-sad.md` | 08 | SAD einvoice trên Jarvis — [đã có](DOC-08-sad.md) |
+| `DOC-19-prototype-shell.md` | 19 | App shell & menu ASCII (M-Invoice ref) — [đã có](DOC-19-prototype-shell.md) |
 | `DOC-10-erd-einvoice-platform.md` | 10 | ERD tổng quan nền tảng HĐĐT — [đã có](DOC-10-erd-einvoice-platform.md) |
 | `DOC-09-adr/` | 09 | [DOC-09](../../../architecture/templates/DOC-09-adr.md) — 1 file / quyết định |
 | `DOC-10-integration-specification.md` | 10 | [DOC-10](../../../architecture/templates/DOC-10-integration-specification.md) |

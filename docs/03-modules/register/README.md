@@ -16,6 +16,7 @@
 | [DOC-04-business-rules.md](DOC-04-business-rules.md) | 04 |
 | [DOC-05-use-cases.md](DOC-05-use-cases.md) | 05 |
 | [DOC-06-srs.md](DOC-06-srs.md) | 06 |
+| [DOC-19-prototype.md](DOC-19-prototype.md) | 19 |
 | [DOC-10-erd.md](DOC-10-erd.md) | 10 |
 
 ## Functional requirements
