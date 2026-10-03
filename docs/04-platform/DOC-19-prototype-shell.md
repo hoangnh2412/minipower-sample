@@ -2,11 +2,11 @@
 
 | Version | Date | Author | Status |
 |---------|------|--------|--------|
-| 0.1 | 2026-10-03 | BA | Draft |
+| — | 2026-10-03 | BA | Draft |
 
-> **Nguồn UI tham chiếu:** [M-Invoice](https://hddt.minvoice.com.vn/) — khảo sát 03/10/2026  
+> **UI governance:** [DOC-20-ui-design-principles.md](../00-governance/DOC-20-ui-design-principles.md)  
 > **Baseline:** [mvp-v1.0-in-scope.md](../01-project/mvp-v1.0-in-scope.md)  
-> **Implement:** `@jarvis/core` layout shell — xem [jarvis-usage-principles.md](jarvis-usage-principles.md)
+> **Implement:** `@jarvis/core` `AdminLayout` (sidebar) — xem [jarvis-usage-principles.md](jarvis-usage-principles.md)
 
 Module wireframe chi tiết: `docs/03-modules/{module-id}/DOC-19-prototype.md`
 
@@ -21,33 +21,33 @@ Mô tả layout ASCII **shell chung** sau đăng nhập — áp dụng cho mọi
 ## 2. Shell chung (authenticated)
 
 ```text
-┌──────────────────────────────────────────────────────────────────────────────┐
-│ [Logo]  ĐK PH ▾  HĐ đầu ra  XL SS ▾  LS TN ▾  BC ▾  DM ▾  HT ▾   🎬 ⬇ 🔔 🌐 👤 │
-│                                              {Tên DN tenant}    MST: {mst}   │
-├──────────────────────────────────────────────────────────────────────────────┤
-│ Breadcrumb:  Home  >  {Module}  >  {Trang con}                               │
-├──────────────────────────────────────────────────────────────────────────────┤
-│ [Toolbar: Tải DL | + Tạo F4 | Sửa F3 | Xóa F8 | … | ⚙]                        │
-├──────────────────────────────────────────────────────────────────────────────┤
-│                         NỘI DUNG CHÍNH (table / form)                         │
-├──────────────────────────────────────────────────────────────────────────────┤
-│ Paginator:  {from}–{to} / {total} bản ghi   |◀◀ ◀  {page}  ▶ ▶▶|  [{size} ▾]  │
-└──────────────────────────────────────────────────────────────────────────────┘
+┌─ Navbar ─────────────────────────────────────────────────────────────────────┐
+│ [≡] [Logo]                              🌐 VI  🔔  👤   {Tên DN}  MST:{mst}  │
+├ Sidebar ─┬─ Main ─────────────────────────────────────────────────────────────┤
+│ Menu     │ ┌─ Page header ──────────────────────────────────────────────────┐│
+│ trái     │ │ {Tiêu đề trang}         [Tải DL][+Tạo F4][Sửa F3][Xóa F8][▾]  ││
+│          │ ├─ Bộ lọc nâng cao (list) ───────────────────────────────────────┤│
+│          │ │ Từ ngày [__]  Đến ngày [__]  {filters…}  [Tìm]  [Xóa lọc]      ││
+│          │ ├─ Nội dung (table / form) ──────────────────────────────────────┤│
+│          │ │ …                                                              ││
+│          │ ├─ Paginator ────────────────────────────────────────────────────┤│
+│          │ │ {from}–{to} / {total}              |◀ 1 2 ▶|  [50▾]             ││
+│          │ └────────────────────────────────────────────────────────────────┘│
+└──────────┴───────────────────────────────────────────────────────────────────┘
 ```
 
-**Thành phần header phải:**
+**Thành phần navbar phải:**
 
 | Icon | Chức năng | MVP |
 |------|-----------|-----|
-| 🎬 | Hướng dẫn | Phase 2 (SUP) |
-| ⬇ | Tải xuống plugin | Phase 2 |
-| 🔔 | Thông báo | Phase 2 |
+| ≡ | Thu gọn / mở sidebar | ✅ |
 | 🌐 | Ngôn ngữ (VI) | ✅ AUTH-FR-04 |
+| 🔔 | Thông báo | Phase 2 |
 | 👤 | Tài khoản / đăng xuất | ✅ |
 
 ---
 
-## 3. Cây menu — MVP v1.0
+## 3. Cây menu sidebar — MVP v1.0
 
 ```text
 App
@@ -79,18 +79,18 @@ App
 
 ## 4. Pattern trang danh sách (CRUD)
 
-Dùng chung cho CAT, REG (mẫu HĐ), SYS (user, quyền):
+Dùng chung cho CAT, REG, INV, SYS:
 
 ```text
-┌─ {Tiêu đề trang} ────────────────────────────────────────────────────────────┐
-│ [Tải DL] [+ Tạo F4] [Sửa F3] [Xóa F8] […actions module…]                      │
-├─ Table + filter inline trên header cột ──────────────────────────────────────┤
-│ # │ {Cột 1} │ {Cột 2} │ … │                                                  │
-│[_]│   ▼     │  [_]    │   │   ← hàng filter                                  │
-│ 1 │  …      │  …      │   │                                                  │
-├─ Paginator ──────────────────────────────────────────────────────────────────┤
-│ {from}–{to} / {total}                         |◀◀ ◀ 1 2 … ▶ ▶▶|  [50▾]       │
-└──────────────────────────────────────────────────────────────────────────────┘
+┌─ {Tiêu đề trang} ──────────────── [Tải DL][+Tạo F4][Sửa F3][Xóa F8][Chức năng ▾] ─┐
+├─ Bộ lọc nâng cao ───────────────────────────────────────────────────────────────────┤
+│ Từ ngày [__]  Đến ngày [__]  {tiêu chí theo module}              [Tìm]  [Xóa lọc]  │
+├─ Table + filter inline header cột ───────────────────────────────────────────────────┤
+│ # │ {Cột 1} ▼ │ {Cột 2} [_] │ …                                                     │
+│[_]│   …       │   …        │                                                        │
+├─ Paginator ──────────────────────────────────────────────────────────────────────────┤
+│ {from}–{to} / {total}                              |◀◀ ◀ 1 2 … ▶ ▶▶|  [50▾]       │
+└──────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 **Phím tắt chuẩn:** F4 tạo · F3 sửa · F8 xóa
@@ -101,6 +101,7 @@ Dùng chung cho CAT, REG (mẫu HĐ), SYS (user, quyền):
 
 | Artifact | Liên kết |
 |----------|----------|
+| UI governance | [DOC-20-ui-design-principles.md](../00-governance/DOC-20-ui-design-principles.md) |
 | BRD | [DOC-03-brd.md §12](../01-project/DOC-03-brd.md#12-phụ-lục--cây-menu-đầy-đủ-khảo-sát-01102026) |
 | MVP scope | [mvp-v1.0-in-scope.md](../01-project/mvp-v1.0-in-scope.md) |
 | Module wireframes | `03-modules/{id}/DOC-19-prototype.md` |

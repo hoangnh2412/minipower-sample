@@ -2,74 +2,88 @@
 
 | Version | Date | Author | Status |
 |---------|------|--------|--------|
-| 0.1 | 2026-10-03 | BA | Draft |
+| — | 2026-10-03 | BA | Draft |
 
 > **Nguồn UI:** [M-Invoice `#/danh-muc/khach-hang`](https://hddt.minvoice.com.vn/#/danh-muc/khach-hang) · 03/10/2026  
-> **SRS:** [DOC-06-srs.md](DOC-06-srs.md) · **Shell:** [DOC-19-prototype-shell.md](../../04-platform/DOC-19-prototype-shell.md)
+> **SRS chi tiết:** [DOC-06-srs.md §6](DOC-06-srs.md#6-đặc-tả-màn-hình--điều-khiển)  
+> **UI governance:** [DOC-20-ui-design-principles.md](../../00-governance/DOC-20-ui-design-principles.md)  
+> **Shell:** [DOC-19-prototype-shell.md](../../04-platform/DOC-19-prototype-shell.md)
 
 ---
 
 ## 1. Phạm vi wireframe (MVP)
 
-| Trang | Route (tham chiếu) | FR |
-|-------|-------------------|-----|
-| Khách hàng | `#/danh-muc/khach-hang` | CAT-FR-01 |
-| Hàng hóa, dịch vụ | `#/danh-muc/hang-hoa` | CAT-FR-02 |
-| Đơn vị tính | `#/danh-muc/don-vi-tinh` | CAT-FR-03 |
-| Tiền tệ | `#/danh-muc/tien-te` | CAT-FR-04 |
-| Hình thức thanh toán | `#/danh-muc/hinh-thuc-thanh-toan` | CAT-FR-06 |
+| Trang | Route | FR |
+|-------|-------|-----|
+| Khách hàng | `/danh-muc/khach-hang` | CAT-FR-01 |
+| Hàng hóa, dịch vụ | `/danh-muc/hang-hoa-dich-vu` | CAT-FR-02 |
+| Đơn vị tính | `/danh-muc/don-vi-tinh` | CAT-FR-03 |
+| Tiền tệ | `/danh-muc/tien-te` | CAT-FR-04 |
+| Hình thức thanh toán | `/danh-muc/hinh-thuc-thanh-toan` | CAT-FR-06 |
 
-Các trang danh mục **dùng chung layout CRUD** — chỉ khác cột bảng và form dialog.
+Tất cả dùng **Pattern L + Dialog D** — xem [DOC-20 §4.1, §4.5](../../00-governance/DOC-20-ui-design-principles.md).
 
 ---
 
-## 2. Layout — Danh sách (ví dụ: Khách hàng)
+## 2. Layout chung — Danh sách (Pattern L)
 
 ```text
-┌─ Shell (xem platform DOC-19) ────────────────────────────────────────────────┐
-│ Breadcrumb: Danh mục > Khách hàng                                              │
-├─ Toolbar ──────────────────────────────────────────────────────────────────────┤
-│ [Tải DL] [+ Tạo F4] [Sửa F3] [Xóa F8] [Sao chép] [Nhập Excel] [Xuất Excel]     │
-│                              [Tạo User tra cứu]  ← Phase 2 nếu cần           │
-├─ Table + filter inline ────────────────────────────────────────────────────────┤
-│ # │ Tên KH/ĐV │ MST │ Tên người mua │ Địa chỉ │ Email │ SĐT │ STK │ …         │
-│[_]│    ▼      │ [_] │     [_]       │  [_]    │ [_]  │[_] │[_] │             │
-│ 1 │ M-invoice…│010..│ HĐ kiểm thử   │ Hà Nội  │     │    │    │             │
-│ 2 │ …         │     │               │         │     │    │    │             │
-├─ Paginator ────────────────────────────────────────────────────────────────────┤
-│ 1–50 / N bản ghi                         |◀◀ ◀ 1 2 3 … ▶ ▶▶|  [50▾]           │
+┌─ Shell ──────────────────────────────────────────────────────────────────────┐
+│ Breadcrumb: Danh mục > {Tên danh mục}                                        │
+├─ Toolbar ────────────────────────────────────────────────────────────────────┤
+│ [Tải DL] [+ Tạo F4] [Sửa F3] [Xóa F8] [Chức năng ▾]                           │
+│   Chức năng ▾: Sao chép | Nhập Excel | Xuất Excel | (module-specific)        │
+├─ Table + filter inline ──────────────────────────────────────────────────────┤
+│ # │ {Cột 1} ▼ │ {Cột 2} [_] │ …                                               │
+│[_]│ …         │ …           │                                                 │
+├─ Paginator: 1–50 / N ────────────────────────────────────────────────────────┤
 └──────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**Out MVP:** cột Ngân hàng (CAT-FR-07) — không hiển thị trên form KH MVP.
-
 ---
 
-## 3. Layout — Form tạo/sửa (dialog hoặc drawer)
+## 3. Delta theo trang
+
+### 3.1 Khách hàng
 
 ```text
-┌─ {Tạo mới / Sửa} Khách hàng ───────────────────────────────────────── [X] ─┐
-│  Mã số thuế        [________________]  🔍  ← tra CQT / gợi ý (CAT-BR-01)   │
-│  Tên đơn vị        [________________]                                      │
-│  Tên người mua     [________________]                                      │
-│  Địa chỉ           [________________]                                      │
-│  Email             [________________]                                      │
-│  Số điện thoại     [________________]                                      │
-│  Số tài khoản      [________________]     ← không bắt buộc MVP             │
-│                                                                          │
-│                              [ Hủy ]  [ Lưu ]                             │
-└──────────────────────────────────────────────────────────────────────────┘
+│ # │ Mã KH │ Tên ĐV ▼ │ MST [_] │ Người mua │ CCCD │ Địa chỉ │ Email │ SĐT │ … │
+```
+
+**Chức năng ▾ P2:** Tạo User tra cứu · **ẩn MVP**
+
+### 3.2 Hàng hóa, dịch vụ
+
+```text
+│ # │ Mã HH [_] │ Tên HH/DV ▼ │ Thuế suất ▼ │ Đơn giá │ UOM │
+```
+
+**Chức năng ▾ thêm:** Thay đổi thuế suất hàng loạt
+
+### 3.3 Đơn vị tính
+
+```text
+│ # │ Mã UOM [_] │ Tên UOM ▼ │
+```
+
+### 3.4 Tiền tệ
+
+```text
+│ # │ Mã │ Tên │ Tỷ giá │ Lẻ SL │ Lẻ ĐG │ Lẻ TT │ Lẻ thuế │ Tên đọc │ … │
 ```
 
 ---
 
-## 4. Layout — Hàng hóa / dịch vụ (delta)
+## 4. Dialog Tạo/Sửa (Pattern D)
 
 ```text
-│ # │ Mã HH │ Tên HH/DV │ UOM │ Đơn giá │ %VAT │ Trạng thái │ …              │
+┌─ {Tạo mới / Sửa} {Entity} ─────────────────────────────────────────── [X] ─┐
+│  {fields theo entity — xem DOC-06 §6}                                      │
+│                              [ Hủy ]  [ Lưu ]                              │
+└────────────────────────────────────────────────────────────────────────────┘
 ```
 
-Form thêm: Mã, Tên, UOM (lookup CAT-FR-03), Thuế suất theo kỳ (CAT-BR-02).
+**F4** mở dialog · **F3** mở dialog với dòng chọn · URL list không đổi.
 
 ---
 

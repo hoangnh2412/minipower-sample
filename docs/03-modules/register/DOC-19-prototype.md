@@ -2,81 +2,101 @@
 
 | Version | Date | Author | Status |
 |---------|------|--------|--------|
-| 0.1 | 2026-10-03 | BA | Draft |
+| — | 2026-10-03 | BA | Draft |
 
 > **Nguồn UI:** [M-Invoice `#/phat-hanh/mau-hoa-don`](https://hddt.minvoice.com.vn/#/phat-hanh/mau-hoa-don) · 03/10/2026  
-> **SRS:** [DOC-06-srs.md](DOC-06-srs.md) · **Shell:** [DOC-19-prototype-shell.md](../../04-platform/DOC-19-prototype-shell.md)
+> **SRS chi tiết:** [DOC-06-srs.md §6](DOC-06-srs.md#6-đặc-tả-màn-hình--điều-khiển)  
+> **UI governance:** [DOC-20-ui-design-principles.md](../../00-governance/DOC-20-ui-design-principles.md)  
+> **Shell:** [DOC-19-prototype-shell.md](../../04-platform/DOC-19-prototype-shell.md)
 
 ---
 
 ## 1. Phạm vi wireframe (MVP)
 
-| Trang | Route (tham chiếu) | FR |
-|-------|-------------------|-----|
-| Mẫu hóa đơn | `#/phat-hanh/mau-hoa-don` | REG-FR-01 |
-| Tờ khai NĐ70/2025 | `#/phat-hanh/to-khai-nd70` (TBD) | REG-FR-03 |
+| Trang | Route einvoice | Pattern | FR |
+|-------|----------------|---------|-----|
+| Mẫu hóa đơn — list | `/phat-hanh/mau-hoa-don` | L | REG-FR-01 |
+| Chọn template | `/phat-hanh/mau-hoa-don/create` | G | REG-FR-01 |
+| Customize template | `/phat-hanh/mau-hoa-don/create/:id` | E | REG-FR-01 |
+| Tờ khai NĐ70 — list | `/phat-hanh/to-khai-nd70` | L | REG-FR-03 |
+| Tờ khai NĐ70 — form | `/phat-hanh/to-khai-nd70/create` | F | REG-FR-03 |
 
-**Out MVP:** Tờ khai NĐ123/2020 (REG-FR-02) — không wire menu.
-
----
-
-## 2. Menu Đăng ký phát hành (MVP)
-
-```text
-Đăng ký phát hành ▾
-├── Mẫu hóa đơn ✅
-├── Tờ khai NĐ123/2020     ❌ ẩn / out MVP
-└── Tờ khai NĐ70/2025 ✅
-```
+**Out MVP:** Tờ khai NĐ123/2020 (REG-FR-02).
 
 ---
 
-## 3. Layout — Mẫu hóa đơn (danh sách)
+## 2. Layout — Danh sách mẫu HĐ (Pattern L)
 
 ```text
 ┌─ Shell ──────────────────────────────────────────────────────────────────────┐
 │ Breadcrumb: Đăng ký phát hành > Mẫu hóa đơn                                   │
-├─ Toolbar ──────────────────────────────────────────────────────────────────────┤
-│ [Tải DL] [+ Tạo F4] [Sửa F3] [Xóa F8] [Xem mẫu HĐ] [Copy mẫu HĐ]               │
-├─ Table + filter ───────────────────────────────────────────────────────────────┤
-│ # │ Mã mẫu │ Tên mẫu │ Loại HĐ │ Trạng thái │ Ngày HL │ …                      │
-│[_]│  [_]   │  [_]   │   ▼     │    ▼       │  [_]   │                         │
-│   │        │        │         │            │        │  (empty state OK)       │
-├─ Paginator ────────────────────────────────────────────────────────────────────┤
-│ 0 bản ghi                                                                    │
-└──────────────────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 4. Layout — Form mẫu hóa đơn
-
-```text
-┌─ Khai báo mẫu hóa đơn ──────────────────────────────────────────────── [X] ─┐
-│  {Fields theo mẫu TCT — REG-BR-01}                                          │
-│  Loại hóa đơn, Ký hiệu, Mẫu số, …                                            │
-│                                                                              │
-│  [ Xem trước mẫu ]              [ Hủy ]  [ Lưu ]                             │
-└──────────────────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 5. Layout — Tờ khai NĐ70 (luồng)
-
-```text
-┌─ Tờ khai đăng ký/thay đổi NĐ70/2025 ─────────────────────────────────────────┐
-│ Breadcrumb: Đăng ký phát hành > Tờ khai NĐ70                                  │
 ├─ Toolbar ────────────────────────────────────────────────────────────────────┤
-│ [+ Tạo mới] [Sửa] [Xóa] [Xem] [Ký gửi CQT]                                    │
-├─ Table danh sách tờ khai ──────────────────────────────────────────────────────┤
-│ # │ Loại TK │ Ngày lập │ Trạng thái CQT │ Mã CQT │ …                           │
-├─ Form tờ khai (dialog / full page) ───────────────────────────────────────────┤
-│  Thông tin DN (pre-fill SYS-FR-01)                                            │
-│  Nội dung tờ khai theo NĐ70 / NĐ254                                           │
-│                                                                              │
-│              [ Hủy ]  [ Lưu nháp ]  [ Ký ]  [ Ký & gửi CQT ]                  │
+│ [Tải DL] [+ Tạo F4] [Sửa F3] [Xóa F8] [Xem mẫu HĐ] [Copy mẫu HĐ]              │
+├─ Table + filter inline ───────────────────────────────────────────────────────┤
+│ # │ Loại HĐ ▼ │ Ký hiệu [_] │ Số dòng in │ Người tạo │ Ngày tạo │ Sử dụng ☐  │
+│[_]│ GTGT      │ 1C26TLC     │ 6          │ admin     │ 01/10/26 │ ☑          │
+├─ Paginator: 1–50 / 1128 ──────────────────────────────────────────────────────┤
 └──────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**Luồng MVP:** Lập → Ký số (SYS-FR-05) → Gửi CQT → Chờ phê duyệt (AC-MVP-02).
+**Tạo F4** → navigate gallery (không dialog).
+
+---
+
+## 3. Layout — Gallery chọn template (Pattern G)
+
+```text
+┌─ Breadcrumb: … > Mẫu hóa đơn > Tạo mới ──────────────────────────────────────┐
+│ [Loại HĐ ▾] [Loại DN ▾] [Tên mẫu____] [Khổ giấy ▾]                            │
+├─ Cards ──────────────────────────────────────────────────────────────────────┤
+│ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐                                   │
+│ │ HOANVE │ │MẪU 01  │ │ IAM'22 │ │ IAM'21 │  ← click → customize route       │
+│ │ preview│ │ GTGT   │ │ preview│ │ preview│                                   │
+│ └────────┘ └────────┘ └────────┘ └────────┘                                   │
+├─ [Quay lại]     paginator (4/trang)              Tổng số 72 bản ghi           │
+└──────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 4. Layout — Customize mẫu (Pattern E)
+
+```text
+┌─ (•) HĐ điện tử  ( ) HĐ chuyển đổi          [Lấy lại mặc định] ──────────────┐
+│ [Thông tin chung | Logo-Hình nền | Tùy chỉnh chi tiết]  │  Live preview      │
+│  Mẫu số, Ký hiệu (1-C-26-T-YY), màu, font, …            │  (scale slider)    │
+├─ [Quay lại]                        [Xem in]  [Lưu thông tin] ─────────────────┤
+└──────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 5. Layout — Tờ khai NĐ70 list (Pattern L)
+
+```text
+┌─ Breadcrumb: … > Tờ khai NĐ70/2025-NĐ254/2026 ────────────────────────────────┐
+│ [Tải DL] [+ Tạo F4] [Sửa F3] [Xóa F8] [Ký và gửi CQT] [Chức năng ▾]          │
+├─ Table ──────────────────────────────────────────────────────────────────────┤
+│ # │ Loại TK ▼ │ Email [_] │ Ngày lập │ Tr.gửi CQT │ Phản hồi │ Bước tiếp theo │
+│[_]│ Thay đổi  │           │ 01/10/26 │ [Đã gửi]   │[Chấp nhận]│ [Hoàn thành]  │
+├─ Paginator ──────────────────────────────────────────────────────────────────┤
+└──────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 6. Layout — Tờ khai NĐ70 form (Pattern F — **full page, không popup**)
+
+```text
+┌─ Breadcrumb: … > Tờ khai NĐ70 > Tạo mới ─────────────────────────────────────┐
+│  ( ) Đăng ký mới  (•) Thay đổi thông tin                                      │
+│  ── Thông tin DN (pre-fill) ──                                                │
+│  ── Hình thức HĐ / chuyển dữ liệu ──                                          │
+│  ── Grid chọn mẫu HĐ đã khai báo ──                                           │
+│  ── Chọn CTS ──                                                               │
+│                                                                              │
+│  [Quay lại]           [Hủy] [Lưu nháp] [Ký] [Ký & gửi CQT]                   │
+└──────────────────────────────────────────────────────────────────────────────┘
+```
+
+> **Delta einvoice:** Tạo mới (F4) **SHALL** navigate `/phat-hanh/to-khai-nd70/create` — không overlay/modal.

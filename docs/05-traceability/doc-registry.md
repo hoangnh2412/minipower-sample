@@ -11,6 +11,7 @@
 |------|-------|-----|-----------------|--------|
 | `00-governance/business-glossary.md` | Business glossary — trạng thái & thuật ngữ (DOC, registry, DOC-16, RACI) | — | BA | Draft |
 | `00-governance/doc-versioning.md` | Quy tắc Version, header, Change Log cho mọi DOC | — | BA | Draft |
+| `00-governance/DOC-20-ui-design-principles.md` | Nguyên tắc UI/UX toàn dự án (tham chiếu M-Invoice) | — | BA | Draft |
 
 ## Chú giải cột
 
