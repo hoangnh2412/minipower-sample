@@ -33,6 +33,7 @@ Chuẩn hóa nguyên tắc thiết kế giao diện cho **toàn bộ einvoice-sa
 | P-11 | **Màu có semantics** | Mỗi màu gắn **một vai trò** (primary, danger, status…); không dùng màu trang trí ngoài bảng token §8. |
 | P-12 | **Lỗi có mã** | Mọi thông báo lỗi hiển thị **`[code] message`** — code trace được về BR/API/SRS. |
 | P-13 | **Desktop-first, responsive** | Layout tối ưu desktop ≥1024px; co gọn sidebar/table trên tablet/mobile — xem §10. |
+| P-14 | **Số phải — chữ trái** | Cột/nội dung **số** (tiền, số lượng, %, STT) căn **phải**; cột/nội dung **chữ** (tên, mô tả, trạng thái) căn **trái**. Header cột theo cùng quy tắc — xem §6. |
 
 ---
 
@@ -95,6 +96,7 @@ Chuẩn hóa nguyên tắc thiết kế giao diện cho **toàn bộ einvoice-sa
 | Filter inline | Lọc nhanh trên cột; kết hợp AND với bộ lọc nâng cao |
 | Selection | Cột `#` = checkbox chọn 1/nhiều dòng |
 | Sort | Icon ▲▼ trên header cột |
+| Căn lề cột | **Số** (`text-right`): tiền, SL, STT, %… · **Chữ** (`text-left`): tên, mô tả, badge trạng thái · **Mã** (MST, mã CQT): trái + `font-mono` |
 | Empty | Text đỏ giữa bảng: *"Không tìm thấy kết quả"* |
 | Paginator | Mặc định page size **50** |
 | Sửa/Xóa | Disabled khi `selectedCount === 0` |
@@ -207,6 +209,20 @@ Separator (`---`) trước nhóm Phase 2 / out MVP.
 ---
 
 ## 6. Bảng dữ liệu
+
+### 6.1 Căn lề cột (P-14)
+
+| Loại dữ liệu | Căn lề | Ví dụ cột |
+|--------------|--------|-----------|
+| **Số** | Phải (`text-right`) | Tổng tiền, SL, thuế, STT, % |
+| **Chữ** | Trái (`text-left`, mặc định) | Tên KH, ghi chú, loại HĐ, trạng thái (badge) |
+| **Mã / định danh** | Trái + `font-mono` | MST, mã CQT, số HĐ, ký hiệu |
+
+- Header (`th`) và cell (`td`) **cùng** căn lề với loại dữ liệu cột.
+- Filter inline dưới header: input số căn phải; dropdown/text căn trái.
+- Form: field nhập số (tiền, SL) dùng `text-right` trên input; label vẫn trái.
+
+### 6.2 Quy tắc hiển thị
 
 | Quy tắc | Giá trị |
 |---------|---------|
