@@ -1,0 +1,5 @@
+export { CompanyInfoPage } from './pages/CompanyInfoPage'
+export { RoleListPage } from './pages/RoleListPage'
+export { UserListPage } from './pages/UserListPage'
+export { CtsRegistrationPage } from './pages/CtsRegistrationPage'
+export { SystemParamsPage } from './pages/SystemParamsPage'
